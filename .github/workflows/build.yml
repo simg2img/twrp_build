@@ -29,10 +29,13 @@ jobs:
         cd aosp-source
         repo init -u https://android.googlesource.com/platform/manifest -b android-11.0.0_r48 --depth=1
         mkdir -p .repo/local_manifests
-        echo '<?xml version="1.0" encoding="UTF-8"?>
+        cat > .repo/local_manifests/device.xml << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
         <manifest>
+          <remote name="github" fetch="https://github.com" />
           <project path="device/alps/oppo6765" name="twrpdtgen/android_device_alps_oppo6765" remote="github" revision="main" />
-        </manifest>' > .repo/local_manifests/device.xml
+        </manifest>
+        EOF
         repo sync -c --no-tags --no-clone-bundle -j$(nproc)
 
     - name: Set up Build Environment
